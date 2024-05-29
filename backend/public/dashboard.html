@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .options {
+            margin-top: 20px;
+        }
+        .option {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Dashboard</h1>
+        <div class="options">
+            <div class="option">
+                <button onclick="buyItem()">Buy Item</button>
+            </div>
+            <div class="option">
+                <button onclick="viewInventory()">View Inventory</button>
+            </div>
+            <div class="option">
+                <button onclick="transferMoney()">Transfer Money</button>
+            </div>
+            <!-- Add more options as needed -->
+        </div>
+    </div>
+    <script>
+        function buyItem() {
+            // Hacer una solicitud al servidor para comprar el artículo deseado
+            fetch('/buy-item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    item: 'nombre_del_articulo'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Compra fallida');
+            })
+            .then(data => {
+                console.log(data.message);
+                // Aquí puedes actualizar la interfaz de usuario según la respuesta del servidor
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        function viewInventory() {
+            // Hacer una solicitud al servidor para obtener el inventario del usuario
+            fetch('/inventory', {
+                method: 'GET'
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Error al obtener el inventario');
+            })
+            .then(inventory => {
+                console.log('Inventario:', inventory);
+                // Aquí puedes mostrar el inventario en la interfaz de usuario
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        function transferMoney() {
+            // Hacer una solicitud al servidor para transferir dinero
+            fetch('/transfer-money', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    recipient: 'nombre_del_destinatario',
+                    amount: 100 // Cantidad de dinero a transferir
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Transferencia de dinero fallida');
+            })
+            .then(data => {
+                console.log(data.message);
+                // Actualizar la interfaz de usuario según la respuesta del servidor
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+    </script>
+</body>
+</html>
